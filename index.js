@@ -1,5 +1,5 @@
-import { ScrollTriggerdAnimation } from "./animations.js"
-import { easeOutBounce } from "./animation-functions.js"
+import { ScrollTriggeredAnimation } from "./animations.js"
+
 
 /**
  * Two types of animation:
@@ -8,36 +8,29 @@ import { easeOutBounce } from "./animation-functions.js"
  */
 
 
+let scroll_triggered_animations = []
+//Init Animations
+window.addEventListener("DOMContentLoaded",()=>{
 
+    //find all objects that need to be animated with an scroll_triggered animation
+    let objects = u(".animation.scroll-triggered")
+
+    //for every object add a animation to the scroll_triggeded_animations variable
+    objects.each((node)=>{
+        scroll_triggered_animations.push(new ScrollTriggeredAnimation(node))
+    })
+
+
+    window.addEventListener("scroll",scroll_event_handler)
+})
 // 1) Scroll triggerd animation
-window.addEventListener("scroll",()=>{
-
-    let documentHeightAnchorBottom = document.body.scrollHeight
-    let documentHeightAnchorTop = document.body.scrollHeight - window.visualViewport.height
-    let scrollYAnchorTop = window.scrollY //offset from the top of the document to the highest visible pixel
+function scroll_event_handler(){
+    //let documentHeightAnchorBottom = document.body.scrollHeight
+    //let documentHeightAnchorTop = document.body.scrollHeight - window.visualViewport.height
+    //let scrollYAnchorTop = window.scrollY //offset from the top of the document to the highest visible pixel
     let scrollYAnchorBottom = window.scrollY + window.visualViewport.height //offset from the bottom of the document to the lowest visible pixel
 
-
-    let object = u("#object")
-
-    //Create animation object (by using data- attributes)
-    let animation = new ScrollTriggerdAnimation(1000,easeOutBounce);
-
-    let objectPosYAnchorTop = object.size().top + window.scrollY
-    let objectPosYAnchorBottom = object.size().top + window.scrollY + object.size().height
-
-    let hasNotYetViewportReachedElement = scrollYAnchorBottom < objectPosYAnchorTop
-    let hasViewportReachedElement = scrollYAnchorBottom >= objectPosYAnchorTop
-
-    if(scrollYAnchorBottom < objectPosYAnchorTop){
-        //trigger backwards animation once
-        console.log("viewport not yet reached object")
-    }else{
-        //trigger forward animation once
-        console.log("viewport reached object")
-        animation.playForwards(object.first())
-    }
-
-    //console.log(objectYAnchorBottom)
-    //console.log(scrollYAnchorBottom)
-})
+    scroll_triggered_animations.map(animation=>{
+        animation.checkEvents(scrollYAnchorBottom)
+    })
+}
