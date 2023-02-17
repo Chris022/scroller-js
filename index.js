@@ -1,4 +1,4 @@
-import PlopAnimation from "./animations/plop-animation.js"
+import { ScrollTriggerdAnimation } from "./animations.js"
 import { easeOutBounce } from "./animation-functions.js"
 
 /**
@@ -7,7 +7,7 @@ import { easeOutBounce } from "./animation-functions.js"
  *  2) Scroll controlled animation - move element with scroll of user (see webC website)
  */
 
-let animation = new PlopAnimation(1000,easeOutBounce);
+
 
 // 1) Scroll triggerd animation
 window.addEventListener("scroll",()=>{
@@ -20,6 +20,9 @@ window.addEventListener("scroll",()=>{
 
     let object = u("#object")
 
+    //Create animation object (by using data- attributes)
+    let animation = new ScrollTriggerdAnimation(1000,easeOutBounce);
+
     let objectPosYAnchorTop = object.size().top + window.scrollY
     let objectPosYAnchorBottom = object.size().top + window.scrollY + object.size().height
 
@@ -27,10 +30,10 @@ window.addEventListener("scroll",()=>{
     let hasViewportReachedElement = scrollYAnchorBottom >= objectPosYAnchorTop
 
     if(scrollYAnchorBottom < objectPosYAnchorTop){
-        //trigger animation once
+        //trigger backwards animation once
         console.log("viewport not yet reached object")
     }else{
-        //trigger reverse animation once
+        //trigger forward animation once
         console.log("viewport reached object")
         animation.playForwards(object.first())
     }
