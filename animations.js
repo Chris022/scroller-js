@@ -22,7 +22,7 @@ export class ScrollTriggeredAnimation{
         let value = this.backward_animation_function(0)
         this.element.style.transform = this.default_transform + " " + "scale("+value+")"
     }
-    playBackwards(snap){
+    playBackwards(){
         if(this.direction == "forwards" && this.playing == true){//if forwards animation is playing -> interrupt it
             window.clearInterval(this.forward_interval)
             //this.element.style.transform = this.default_transform
