@@ -73,3 +73,17 @@ export function easeOutBounce(x) {
         return n1 * (x -= 2.625 / d1) * x + 0.984375;
     }
 }
+
+export default {
+    "easeOutBounce":easeOutBounce,
+    "easeOutElastic":easeOutElastic,
+    "easeInOutBack":easeInOutBack,
+    "easeInExpo":easeInExpo,
+    "easeInQuart":easeInQuart,
+    "easeInCubic":easeInCubic,
+    "easeInOutQuart":easeInOutQuart,
+    "easeOutQuart":easeOutQuart,
+    "easeInOutCubic":easeInOutCubic,
+    "easeOutCubic":easeOutCubic,
+    "easeInOutElastic":easeInOutElastic
+};

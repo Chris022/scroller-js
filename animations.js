@@ -1,4 +1,4 @@
-import { easeOutBounce } from "./animation-functions.js"
+import animation_functions from "./animation-functions.js"
 
 
 export class ScrollTriggeredAnimation{
@@ -6,10 +6,11 @@ export class ScrollTriggeredAnimation{
         this.element = element
 
         //set antiation options via data attributes
-        this.forward_duration = u(element).data("animation-lenght") || 1000;
-        this.forward_animation_function = easeOutBounce
-        this.backward_duration = u(element).data("animation-lenght") || 1000;
-        this.backward_animation_function = easeOutBounce
+        this.forward_duration = u(element).data("animation-forward-duration") || 1000;
+        //set the animation-function
+        this.forward_animation_function = animation_functions[u(element).data("animation-forward-function")] || animation_functions["easeOutBounce"]
+        this.backward_duration = u(element).data("animation-backward-duration") || this.forward_duration;
+        this.backward_animation_function = animation_functions[u(element).data("animation-backward-function")] || this.forward_animation_function
 
         //set default values
         this.playing = false;
