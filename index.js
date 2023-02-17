@@ -1,8 +1,13 @@
+import PlopAnimation from "./animations/plop-animation.js"
+import { easeOutBounce } from "./animation-functions.js"
+
 /**
  * Two types of animation:
  *  1) Scroll triggerd animations - animation starts once element is scrolled into view - also undo animation once user scroll back aboth element (see aos library)
  *  2) Scroll controlled animation - move element with scroll of user (see webC website)
  */
+
+let animation = new PlopAnimation(1000,easeOutBounce);
 
 // 1) Scroll triggerd animation
 window.addEventListener("scroll",()=>{
@@ -22,9 +27,12 @@ window.addEventListener("scroll",()=>{
     let hasViewportReachedElement = scrollYAnchorBottom >= objectPosYAnchorTop
 
     if(scrollYAnchorBottom < objectPosYAnchorTop){
+        //trigger animation once
         console.log("viewport not yet reached object")
     }else{
+        //trigger reverse animation once
         console.log("viewport reached object")
+        animation.playForwards(object.first())
     }
 
     //console.log(objectYAnchorBottom)
