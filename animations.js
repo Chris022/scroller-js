@@ -4,8 +4,9 @@ import animation_functions from "./animation-functions.js"
 export class ScrollTriggeredAnimation{
     constructor(element) {
         this.element = element
-
         //set antiation options via data attributes
+        this.animated_transform = u(element).data("animation-attribute");
+        if(!this.animated_transform) throw new Error("no animation-attribute given")
         this.forward_duration = u(element).data("animation-forward-duration") || 1000;
         //set the animation-function
         this.forward_animation_function = animation_functions[u(element).data("animation-forward-function")] || animation_functions["easeOutBounce"]
@@ -21,7 +22,7 @@ export class ScrollTriggeredAnimation{
 
         //start by setting transform to the end state of the backwards animation
         let value = this.backward_animation_function(0)
-        this.element.style.transform = this.default_transform + " " + "scale("+value+")"
+        this.element.style.transform = this.default_transform + " " + this.animated_transform +"("+value+")"
     }
     playBackwards(){
         if(this.direction == "forwards" && this.playing == true){//if forwards animation is playing -> interrupt it
@@ -41,7 +42,7 @@ export class ScrollTriggeredAnimation{
         this.backward_interval = window.setInterval(()=>{
             let value = this.backward_animation_function(counter/this.backward_duration)
 
-            this.element.style.transform = this.default_transform + " " + "scale("+value+")"
+            this.element.style.transform = this.default_transform + " " + this.animated_transform + "("+value+")"
 
             if(counter <= 0){
                 window.clearInterval(this.backward_interval)
@@ -72,7 +73,7 @@ export class ScrollTriggeredAnimation{
         this.forward_interval = window.setInterval(()=>{
             let value = this.forward_animation_function(counter/this.forward_duration)
 
-            this.element.style.transform = this.default_transform + " " + "scale("+value+")"
+            this.element.style.transform = this.default_transform + " " + this.animated_transform + "("+value+")"
 
             if(counter >= this.forward_duration){
                 window.clearInterval(this.forward_interval)
