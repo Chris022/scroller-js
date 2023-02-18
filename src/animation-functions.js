@@ -12,6 +12,10 @@ export function easeInOutElastic(x) {
       : (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1;
 }
 
+export function linear(x){
+    return x;
+}
+
 export function easeOutCubic(x) {
     return 1 - Math.pow(1 - x, 3);
 }
@@ -75,6 +79,7 @@ export function easeOutBounce(x) {
 }
 
 export default {
+    "linear": linear,
     "easeOutBounce":easeOutBounce,
     "easeOutElastic":easeOutElastic,
     "easeInOutBack":easeInOutBack,
