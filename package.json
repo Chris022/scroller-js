@@ -1,0 +1,24 @@
+{
+  "name": "webc-js-animations",
+  "version": "1.0.0",
+  "description": "This is a super simple lib to provied scroll triggered/controlled animations",
+  "main": "index.html",
+  "source": "index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build --out-file webc-scroll-animations.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chris022/js-animations.git"
+  },
+  "author": "Christoph Weberbauer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chris022/js-animations/issues"
+  },
+  "homepage": "https://github.com/Chris022/js-animations#readme",
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
+}
