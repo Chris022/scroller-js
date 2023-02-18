@@ -1,4 +1,4 @@
-import { ScrollTriggeredAnimation } from "./animations.js"
+import { ScrollTriggeredAnimation } from "./scroll-triggered-animations.js"
 
 
 /**
