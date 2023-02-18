@@ -9,13 +9,13 @@ export class ScrollControlledAnimation{
         let [getDataDefault,getDataError] = DataStorrage(this.element,"animation")
 
         this.animated_transform = getDataError("transform")
-        this.keyframe_from      = getDataError("keyframe-from")
-        this.keyframe_to        = getDataError("keyframe-to");
+        this.keyframe_from      = getDataError("keyframe-from",true)
+        this.keyframe_to        = getDataError("keyframe-to",true);
         this.unit               = getDataDefault("unit","");
-        this.scroll_duration    = getDataError("scroll-duration");
+        this.scroll_duration    = getDataError("scroll-duration",true);
         this.animation_function = getDataError("function")
 
-        this.start_offset       = getDataDefault("start-offset", 0);
+        this.start_offset       = getDataDefault("start-offset", 0,true);
 
         //process attributes
         this.animation_function = animation_functions[this.animation_function]
@@ -31,7 +31,6 @@ export class ScrollControlledAnimation{
         let objectPosYAnchorMiddle = u(this.element).size().top + window.scrollY +  u(this.element).size().height/2
         
         let relative_scroll = scroll - objectPosYAnchorMiddle - this.start_offset
-
         if(relative_scroll < 0){
             this.element.style.transform = this.default_transform + " " + this.animated_transform+"("+this.keyframe_from+this.unit+")";
         }else if(relative_scroll < this.scroll_duration){

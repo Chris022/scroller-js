@@ -12,14 +12,14 @@ export class ScrollTriggeredAnimation{
         let [getDataDefault,getDataError] = DataStorrage(this.element,"animation")
 
         this.animated_transform = getDataError("transform")
-        this.keyframe_from      = getDataError("keyframe-from")
-        this.keyframe_to        = getDataError("keyframe-to");
+        this.keyframe_from      = getDataError("keyframe-from",true)
+        this.keyframe_to        = getDataError("keyframe-to",true);
         this.unit               = getDataDefault("unit","");
 
-        this.forward_duration           = getDataError("forward-duration")
+        this.forward_duration           = getDataError("forward-duration",true)
         this.forward_animation_function = getDataError("forward-function")
 
-        this.backward_duration          = getDataDefault("backward-duration",this.forward_duration);
+        this.backward_duration          = getDataDefault("backward-duration",this.forward_duration,true);
         this.backward_animation_function= getDataDefault("backward-function",this.forward_animation_function);
 
         //process attributes
