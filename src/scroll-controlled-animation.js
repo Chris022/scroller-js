@@ -11,7 +11,7 @@ export class ScrollControlledAnimation{
         this.animated_transform = getDataError("transform")
         this.keyframe_from      = getDataError("keyframe-from")
         this.keyframe_to        = getDataError("keyframe-to");
-        this.unit               = getDataError("unit");
+        this.unit               = getDataDefault("unit","");
         this.scroll_duration    = getDataError("scroll-length");
         this.animation_function = getDataError("function")
 
