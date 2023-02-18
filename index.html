@@ -11,9 +11,23 @@
         <div 
             class="animation scroll-controlled"
             style="width: fit-content;"
-            data-animation-attribute="scale" data-animation-forward-function="easeOutBounce"
+            data-animation-function="linear"
+            data-animation-scroll-duration=100
+            data-animation-transform="scale"
+            data-animation-keyframe-from=0
+            data-animation-keyframe-to=1
         >
-            HALLO Das ist ein Test
+            <div 
+                class="animation scroll-triggered"
+                style="width: fit-content;"
+                data-animation-forward-function="easeOutBounce"
+                data-animation-forward-duration=1000
+                data-animation-transform="scale"
+                data-animation-keyframe-from=0
+                data-animation-keyframe-to=1
+            >
+                HALLO Das ist ein Test
+            </div>
         </div>
 
 
