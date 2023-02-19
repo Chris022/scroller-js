@@ -15,6 +15,7 @@ export class ScrollTriggeredAnimation{
         this.keyframe_from      = getDataError("keyframe-from",true)
         this.keyframe_to        = getDataError("keyframe-to",true);
         this.unit               = getDataDefault("unit","");
+        this.offset             = getDataDefault("offset",0,true);
 
         this.forward_duration           = getDataError("forward-duration",true)
         this.forward_animation_function = getDataError("forward-function")
@@ -108,11 +109,12 @@ export class ScrollTriggeredAnimation{
 
         //Ziel: ein art Hyperbel -> Also die forwärtsanimation startet sobald weiter als zur mitte des Elements gescrolled wird
         // die rückwärts animation started sobald dann wieder höher gleich der mitte des elements gescrolled wird
-        
-        if(scrollYAnchorBottom > objectPosYAnchorMiddle){
+        console.log(objectPosYAnchorMiddle+this.offset)
+        console.log(scrollYAnchorBottom)
+        if(scrollYAnchorBottom > objectPosYAnchorMiddle+this.offset){
             //play forwards
             this.playForwards()
-        }else if(scrollYAnchorBottom <= objectPosYAnchorMiddle){
+        }else if(scrollYAnchorBottom <= objectPosYAnchorMiddle+this.offset){
             //play backwards
             this.playBackwards()
         }
