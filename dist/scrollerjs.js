@@ -77,10 +77,12 @@ class $0a2e60d6efdd78ff$export$f5804c2eff459bff {
         this.element = element;
         //Get Animations via data- attributes
         let [getDataDefault, getDataError] = (0, $c7be1fc6c13f9027$export$70981bf34b85c1b0)(this.element, "animation");
-        this.animated_transform = getDataError("transform");
+        this.animated_css = getDataError("css");
+        this.animated_css_func = getDataDefault("css-func", "");
         this.keyframe_from = getDataError("keyframe-from", true);
         this.keyframe_to = getDataError("keyframe-to", true);
         this.unit = getDataDefault("unit", "");
+        this.offset = getDataDefault("offset", 0, true);
         this.forward_duration = getDataError("forward-duration", true);
         this.forward_animation_function = getDataError("forward-function");
         this.backward_duration = getDataDefault("backward-duration", this.forward_duration, true);
@@ -93,9 +95,9 @@ class $0a2e60d6efdd78ff$export$f5804c2eff459bff {
         this.direction = "forwards";
         this.forward_interval = null;
         this.backward_interval = null;
-        this.default_transform = element.style.transform;
-        //start by setting transform to the "keyframe-from" position
-        this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + this.keyframe_from + this.unit + ")";
+        //start by setting the animated css value to the "keyframe-from" position
+        if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + this.keyframe_from + this.unit + ")";
+        else this.element.style[this.animated_css] = this.keyframe_from + this.unit;
     }
     playBackwards() {
         if (this.direction == "forwards" && this.playing == true) {
@@ -111,7 +113,8 @@ class $0a2e60d6efdd78ff$export$f5804c2eff459bff {
         this.backward_interval = window.setInterval(()=>{
             let stretched_animation_function = (counter)=>this.keyframe_from + this.backward_animation_function(counter) * (this.keyframe_to - this.keyframe_from);
             let value = stretched_animation_function(counter / this.backward_duration);
-            this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + value + this.unit + ")";
+            if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + value + this.unit + ")";
+            else this.element.style[this.animated_css] = value + this.unit;
             if (counter <= 0) {
                 window.clearInterval(this.backward_interval);
                 //this.element.style.transform = this.default_transform
@@ -136,7 +139,8 @@ class $0a2e60d6efdd78ff$export$f5804c2eff459bff {
         this.forward_interval = window.setInterval(()=>{
             let stretched_animation_function = (counter)=>this.keyframe_from + this.forward_animation_function(counter) * (this.keyframe_to - this.keyframe_from);
             let value = stretched_animation_function(counter / this.forward_duration);
-            this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + value + this.unit + ")";
+            if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + value + this.unit + ")";
+            else this.element.style[this.animated_css] = value + this.unit;
             if (counter >= this.forward_duration) {
                 window.clearInterval(this.forward_interval);
                 //this.element.style.transform = this.default_transform
@@ -151,9 +155,9 @@ class $0a2e60d6efdd78ff$export$f5804c2eff459bff {
         //let objectPosYAnchorBottom = object.size().top + window.scrollY + object.size().height
         //Ziel: ein art Hyperbel -> Also die forwärtsanimation startet sobald weiter als zur mitte des Elements gescrolled wird
         // die rückwärts animation started sobald dann wieder höher gleich der mitte des elements gescrolled wird
-        if (scrollYAnchorBottom > objectPosYAnchorMiddle) //play forwards
+        if (scrollYAnchorBottom > objectPosYAnchorMiddle + this.offset) //play forwards
         this.playForwards();
-        else if (scrollYAnchorBottom <= objectPosYAnchorMiddle) //play backwards
+        else if (scrollYAnchorBottom <= objectPosYAnchorMiddle + this.offset) //play backwards
         this.playBackwards();
     }
 }
@@ -166,7 +170,8 @@ class $8af37d3d6d640fb1$export$34286bc08bf9c80a {
         this.element = element;
         //Get Animations via data- attributes
         let [getDataDefault, getDataError] = (0, $c7be1fc6c13f9027$export$70981bf34b85c1b0)(this.element, "animation");
-        this.animated_transform = getDataError("transform");
+        this.animated_css = getDataError("css");
+        this.animated_css_func = getDataDefault("css-func", "");
         this.keyframe_from = getDataError("keyframe-from", true);
         this.keyframe_to = getDataError("keyframe-to", true);
         this.unit = getDataDefault("unit", "");
@@ -175,17 +180,24 @@ class $8af37d3d6d640fb1$export$34286bc08bf9c80a {
         this.start_offset = getDataDefault("start-offset", 0, true);
         //process attributes
         this.animation_function = (0, $e81a113864fe77bb$export$2e2bcd8739ae039)[this.animation_function];
-        //set default values
-        this.default_transform = element.style.transform;
+        //start by setting the animated css value to the "keyframe-from" position
+        if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + this.keyframe_from + this.unit + ")";
+        else this.element.style[this.animated_css] = this.keyframe_from + this.unit;
     }
     checkEvents(scroll) {
         //verticaly stretch animation-function to start at "keyframe-from" and end at "keyframe-to"
         let stretched_animation_function = (counter)=>this.keyframe_from + this.animation_function(counter) * (this.keyframe_to - this.keyframe_from);
         let objectPosYAnchorMiddle = u(this.element).size().top + window.scrollY + u(this.element).size().height / 2;
         let relative_scroll = scroll - objectPosYAnchorMiddle - this.start_offset;
-        if (relative_scroll < 0) this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + this.keyframe_from + this.unit + ")";
-        else if (relative_scroll < this.scroll_duration) this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + stretched_animation_function(relative_scroll / this.scroll_duration) + this.unit + ")";
-        else this.element.style.transform = this.default_transform + " " + this.animated_transform + "(" + this.keyframe_to + this.unit + ")";
+        if (relative_scroll < 0) {
+            //start by setting the animated css value to the "keyframe-from" position
+            if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + this.keyframe_from + this.unit + ")";
+            else this.element.style[this.animated_css] = this.keyframe_from + this.unit;
+        } else if (relative_scroll < this.scroll_duration) {
+            if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + stretched_animation_function(relative_scroll / this.scroll_duration) + this.unit + ")";
+            else this.element.style[this.animated_css] = stretched_animation_function(relative_scroll / this.scroll_duration) + this.unit;
+        } else if (this.animated_css_func) this.element.style[this.animated_css] = this.animated_css_func + "(" + this.keyframe_to + this.unit + ")";
+        else this.element.style[this.animated_css] = this.keyframe_to + this.unit;
     }
 }
 
@@ -209,9 +221,9 @@ window.addEventListener("DOMContentLoaded", ()=>{
     scroll_controlled_objects.each((node)=>{
         $d3928351bb4a0237$var$scroll_controlled_animations.push(new (0, $8af37d3d6d640fb1$export$34286bc08bf9c80a)(node));
     });
-    window.addEventListener("scroll", $d3928351bb4a0237$var$scroll_event_handler);
+    window.requestAnimationFrame($d3928351bb4a0237$var$animation_loop);
 });
-function $d3928351bb4a0237$var$scroll_event_handler() {
+function $d3928351bb4a0237$var$animation_loop(time) {
     //let documentHeightAnchorBottom = document.body.scrollHeight
     //let documentHeightAnchorTop = document.body.scrollHeight - window.visualViewport.height
     //let scrollYAnchorTop = window.scrollY //offset from the top of the document to the highest visible pixel
@@ -223,6 +235,7 @@ function $d3928351bb4a0237$var$scroll_event_handler() {
     $d3928351bb4a0237$var$scroll_controlled_animations.map((animation)=>{
         animation.checkEvents(scrollYAnchorBottom);
     });
+    window.requestAnimationFrame($d3928351bb4a0237$var$animation_loop);
 }
 
 
