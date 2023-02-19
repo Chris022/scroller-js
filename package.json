@@ -2,11 +2,10 @@
   "name": "webc-js-animations",
   "version": "1.0.0",
   "description": "This is a super simple lib to provied scroll triggered/controlled animations",
-  "main": "index.html",
-  "source": "index.html",
+  "main": "dist/scrollerjs.js",
+  "source": "src/index.js",
   "scripts": {
-    "start": "parcel",
-    "build": "parcel build --out-file webc-scroll-animations.js"
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",
