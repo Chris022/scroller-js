@@ -30,11 +30,11 @@ window.addEventListener("DOMContentLoaded",()=>{
     })
 
 
-    window.addEventListener("scroll",scroll_event_handler)
+    window.requestAnimationFrame(animation_loop)
 })
 
 
-function scroll_event_handler(){
+function animation_loop(time){
     //let documentHeightAnchorBottom = document.body.scrollHeight
     //let documentHeightAnchorTop = document.body.scrollHeight - window.visualViewport.height
     //let scrollYAnchorTop = window.scrollY //offset from the top of the document to the highest visible pixel
@@ -47,4 +47,5 @@ function scroll_event_handler(){
     scroll_controlled_animations.map(animation=>{
         animation.checkEvents(scrollYAnchorBottom)
     })
+    window.requestAnimationFrame(animation_loop)
 }
