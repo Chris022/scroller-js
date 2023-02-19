@@ -8,7 +8,8 @@ export class ScrollControlledAnimation{
         //Get Animations via data- attributes
         let [getDataDefault,getDataError] = DataStorrage(this.element,"animation")
 
-        this.animated_transform = getDataError("transform")
+        this.animated_css       = getDataError("css")
+        this.animated_css_func  = getDataDefault("css-func","")
         this.keyframe_from      = getDataError("keyframe-from",true)
         this.keyframe_to        = getDataError("keyframe-to",true);
         this.unit               = getDataDefault("unit","");
@@ -20,8 +21,12 @@ export class ScrollControlledAnimation{
         //process attributes
         this.animation_function = animation_functions[this.animation_function]
 
-        //set default values
-        this.default_transform = element.style.transform
+        //start by setting the animated css value to the "keyframe-from" position
+        if(this.animated_css_func){
+            this.element.style[this.animated_css] = this.animated_css_func +"("+this.keyframe_from+this.unit+")"
+        }else{
+            this.element.style[this.animated_css] = this.keyframe_from+this.unit
+        }
     }
     checkEvents(scroll){
 
@@ -32,12 +37,24 @@ export class ScrollControlledAnimation{
         
         let relative_scroll = scroll - objectPosYAnchorMiddle - this.start_offset
         if(relative_scroll < 0){
-            this.element.style.transform = this.default_transform + " " + this.animated_transform+"("+this.keyframe_from+this.unit+")";
+            //start by setting the animated css value to the "keyframe-from" position
+            if(this.animated_css_func){
+                this.element.style[this.animated_css] = this.animated_css_func +"("+this.keyframe_from+this.unit+")"
+            }else{
+                this.element.style[this.animated_css] = this.keyframe_from+this.unit
+            }
         }else if(relative_scroll < this.scroll_duration){
-            this.element.style.transform = this.default_transform + " " + this.animated_transform+"("+stretched_animation_function(relative_scroll/this.scroll_duration)+this.unit+")";
+            if(this.animated_css_func){
+                this.element.style[this.animated_css] = this.animated_css_func +"("+stretched_animation_function(relative_scroll/this.scroll_duration)+this.unit+")"
+            }else{
+                this.element.style[this.animated_css] = stretched_animation_function(relative_scroll/this.scroll_duration)+this.unit
+            }
         }else{
-            this.element.style.transform = this.default_transform + " " + this.animated_transform+"("+this.keyframe_to+this.unit+")";
-        }
-        
+            if(this.animated_css_func){
+                this.element.style[this.animated_css] = this.animated_css_func +"("+this.keyframe_to+this.unit+")"
+            }else{
+                this.element.style[this.animated_css] = this.keyframe_to+this.unit
+            }
+        }   
     }
 }

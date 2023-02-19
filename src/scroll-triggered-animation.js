@@ -11,7 +11,8 @@ export class ScrollTriggeredAnimation{
         //Get Animations via data- attributes
         let [getDataDefault,getDataError] = DataStorrage(this.element,"animation")
 
-        this.animated_transform = getDataError("transform")
+        this.animated_css       = getDataError("css")
+        this.animated_css_func  = getDataDefault("css-func","")
         this.keyframe_from      = getDataError("keyframe-from",true)
         this.keyframe_to        = getDataError("keyframe-to",true);
         this.unit               = getDataDefault("unit","");
@@ -33,11 +34,14 @@ export class ScrollTriggeredAnimation{
         this.direction = "forwards";
         this.forward_interval = null;
         this.backward_interval = null;
-        this.default_transform = element.style.transform
 
-
-        //start by setting transform to the "keyframe-from" position
-        this.element.style.transform = this.default_transform + " " + this.animated_transform +"("+this.keyframe_from+this.unit+")"
+        //start by setting the animated css value to the "keyframe-from" position
+        if(this.animated_css_func){
+            this.element.style[this.animated_css] = this.animated_css_func +"("+this.keyframe_from+this.unit+")"
+        }else{
+            this.element.style[this.animated_css] = this.keyframe_from+this.unit
+        }
+        
     }
     playBackwards(){
         if(this.direction == "forwards" && this.playing == true){//if forwards animation is playing -> interrupt it
@@ -58,7 +62,11 @@ export class ScrollTriggeredAnimation{
             let stretched_animation_function = (counter)=>(this.keyframe_from + this.backward_animation_function(counter) * (this.keyframe_to-this.keyframe_from))
             let value = stretched_animation_function(counter/this.backward_duration)
 
-            this.element.style.transform = this.default_transform + " " + this.animated_transform + "("+value+this.unit+")"
+            if(this.animated_css_func){
+                this.element.style[this.animated_css] = this.animated_css_func +"("+value+this.unit+")"
+            }else{
+                this.element.style[this.animated_css] = value+this.unit
+            }
 
             if(counter <= 0){
                 window.clearInterval(this.backward_interval)
@@ -90,7 +98,11 @@ export class ScrollTriggeredAnimation{
             let stretched_animation_function = (counter)=>(this.keyframe_from + this.forward_animation_function(counter) * (this.keyframe_to-this.keyframe_from))
             let value = stretched_animation_function(counter/this.forward_duration)
 
-            this.element.style.transform = this.default_transform + " " + this.animated_transform + "("+value+this.unit+")"
+            if(this.animated_css_func){
+                this.element.style[this.animated_css] = this.animated_css_func +"("+value+this.unit+")"
+            }else{
+                this.element.style[this.animated_css] = value+this.unit
+            }
 
             if(counter >= this.forward_duration){
                 window.clearInterval(this.forward_interval)
@@ -109,8 +121,6 @@ export class ScrollTriggeredAnimation{
 
         //Ziel: ein art Hyperbel -> Also die forwärtsanimation startet sobald weiter als zur mitte des Elements gescrolled wird
         // die rückwärts animation started sobald dann wieder höher gleich der mitte des elements gescrolled wird
-        console.log(objectPosYAnchorMiddle+this.offset)
-        console.log(scrollYAnchorBottom)
         if(scrollYAnchorBottom > objectPosYAnchorMiddle+this.offset){
             //play forwards
             this.playForwards()
